@@ -1,5 +1,4 @@
 import { useMutation } from "react-query";
-
 import ManagePackageForm from "../../components/managetourpackage/ManagePackageForm";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';

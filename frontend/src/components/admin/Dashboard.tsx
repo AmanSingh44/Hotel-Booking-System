@@ -1,5 +1,8 @@
 import React from 'react';
+import UserDetails from './BookingUserDetails';
 
 export default function Dashboard() {
-  return <div>Dashboard</div>
+  return <div>
+    <UserDetails tourId={''}/>
+  </div>
 }

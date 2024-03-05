@@ -1,6 +1,4 @@
-import { useQuery } from "react-query";
 import { useSearchContext } from "../contexts/SearchContext";
-import * as apiClient from "../api-client";
 import { useEffect, useState } from "react";
 import SearchResultCard from "../components/SearchResultCard";
 import { fetchRecommendedTours } from "../api-client";

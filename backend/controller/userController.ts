@@ -1,9 +1,9 @@
 import { validationResult } from "express-validator";
 import User from "../model/UserModel";
-import EmailVerificationToken,{IEmailVerificationToken} from "../model/emailVerificationToken";
 import jwt from "jsonwebtoken";
-import nodemailer from "nodemailer";
+import EmailVerificationToken from "../model/emailVerificationToken";
 const asyncHandler = require("express-async-handler");
+import nodemailer from "nodemailer"
 import {generateOTP} from "../utils/mail"
 import { isValidObjectId } from "mongoose";
 // const generateToken = require("../config/generateToken")
@@ -39,11 +39,10 @@ export const createNewUser = async (req, res) => {
 
     // Sending OTP to user
     const transporter = nodemailer.createTransport({
-      host: 'sandbox.smtp.mailtrap.io',
-      port: 2525,
+      service: "gmail",
       auth: {
-        user: 'cfe76195695bed',
-        pass: '56b03a7882315e',
+        user: "travelharbor076@gmail.com",
+        pass: "ejojzmlkgqjusbet",
       },
     });
 
@@ -125,7 +124,7 @@ export const verifyEmail = async (req, res) => {
     html: "<h1>Welcome to our App</h1>",
   });
 
-  const jwtToken = jwt.sign({ userId: user._id }, "jsflksjflksfjljsasf");
+  const jwtToken = jwt.sign({ userId: user._id }, process.env.JWT_SECRET_KEY);
 
   res.json({
     user: {
@@ -171,3 +170,4 @@ export const bookingUserDetails = async (req, res) => {
     });
   }
 };
+

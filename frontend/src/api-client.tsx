@@ -3,8 +3,9 @@ import { SignInFormData } from "./pages/SignIn";
 import { TourType } from "../../backend/model/TourModel";
 import { PaymentIntentResponse, TourSearchResponse, UserType } from "../../backend/shared/types";
 import { BookingFormData } from "./components/BookingForm";
-import { VerifyEmailFormData } from "./pages/EmailVerification";
 import { CommentFormData } from "./components/Experience";
+import { EmailVerificationFormData } from "./pages/EmailVerification";
+
 
 export const register = async (formData: RegisterFormData) => {
   const response = await fetch("http://localhost:5000/api/users/register", {
@@ -29,7 +30,7 @@ export const register = async (formData: RegisterFormData) => {
 
 };
 
-export const verifyUserEmail=async(formData:VerifyEmailFormData)=>{
+export const verifyUserEmail=async(formData:EmailVerificationFormData)=>{
   const response=await fetch(`http://localhost:5000/api/users/verify-email`,{
     method:"POST",
     credentials:"include",
@@ -64,8 +65,6 @@ export const signIn = async (formData: SignInFormData) => {
   
   return body;
 };
-
-
 
 
 export const validateToken = async () => {
@@ -131,33 +130,6 @@ export const addMyTour = async (tourFormData: FormData) => {
     throw error; // Rethrow the error for further handling if needed
   }
 };
-
-export const fetchRecommendedTours = async (location, type, budget) => {
-  try {
-      const response = await fetch(
-          'http://localhost:5000/api/recommendation',
-          {
-              method: 'POST',
-              headers: {
-                  'Content-Type': 'application/json'
-              },
-              body: JSON.stringify({ location, type, budget })
-          }
-      );
-
-      if (!response.ok) {
-          const errorText = await response.text();
-          console.error('Error fetching tours. Server response:', errorText);
-          throw new Error('Failed to fetch tours');
-      }
-
-      return response.json();
-  } catch (error) {
-      console.error('Error fetching tours:', error.message);
-      throw error; // Rethrow the error for further handling if needed
-  }
-};
-
 
 
 // get all tour package
@@ -339,33 +311,6 @@ export const createPaymentIntent = async (tourId: string): Promise<PaymentIntent
 };
 
 
-export const getRating = async (formData: CommentFormData) => {
-  try {
-    const response = await fetch(
-      `http://localhost:5000/api/my-package/${formData.tourId}/ratings`,
-      {
-        method: "POST",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ comment: formData.comment }), // Only include comment in the request body
-      }
-    );
-
-    if (!response.ok) {
-      throw new Error("Error submitting comment");
-    }
-
-    const responseData = await response.json();
-    return responseData; // You might want to return something here based on your API response
-  } catch (error) {
-    console.error("Error submitting comment:", error);
-    throw new Error("Failed to submit comment");
-  }
-};
-
-
 export const createTourBooking = async (formData: BookingFormData) => {
   try {
     const response = await fetch(
@@ -379,6 +324,8 @@ export const createTourBooking = async (formData: BookingFormData) => {
         body: JSON.stringify(formData),
       }
     );
+    console.log("Data",response);
+    
 
     if (!response.ok) {
       throw new Error("Error booking tour");
@@ -414,3 +361,56 @@ export const fetchMyBookings = async(): Promise<TourType[]>=>{
     throw new Error("Error fetching tour");
   }
 }
+
+
+export const fetchRecommendedTours = async (location, type, budget) => {
+  try {
+      const response = await fetch(
+          'http://localhost:5000/api/recommendation',
+          {
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({ location, type, budget })
+          }
+      );
+
+      if (!response.ok) {
+          const errorText = await response.text();
+          console.error('Error fetching tours. Server response:', errorText);
+          throw new Error('Failed to fetch tours');
+      }
+
+      return response.json();
+  } catch (error) {
+      console.error('Error fetching tours:', error.message);
+      throw error; // Rethrow the error for further handling if needed
+  }
+};
+
+export const getRating = async (formData: CommentFormData) => {
+  try {
+    const response = await fetch(
+      `http://localhost:5000/api/my-package/${formData.tourId}/ratings`,
+      {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ comment: formData.comment }), // Only include comment in the request body
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error("Error submitting comment");
+    }
+
+    const responseData = await response.json();
+    return responseData; // You might want to return something here based on your API response
+  } catch (error) {
+    console.error("Error submitting comment:", error);
+    throw new Error("Failed to submit comment");
+  }
+};

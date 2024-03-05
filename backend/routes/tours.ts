@@ -6,8 +6,6 @@ import { confirmBooking, deleteTour, editTour, fetchParticularTour, getTourList,
 import Stripe from 'stripe'
 import { sentimentRating } from "../controller/sentimentController";
 
-
-
 const stripe = new Stripe(process.env.STRIPE_API_KEY as string)
 const router = express.Router();
 const storage = multer.memoryStorage();
@@ -40,7 +38,7 @@ router.post(
   myTourList
 )
 
-router.get('/addtour',verifyToken,getTourList)
+router.get('/addtour',getTourList)
 
 router.get('/addtour/:id', verifyToken , fetchParticularTour)
 

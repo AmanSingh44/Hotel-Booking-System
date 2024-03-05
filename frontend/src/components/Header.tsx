@@ -1,36 +1,36 @@
 import { Link } from "react-router-dom";
 import { useAppContext } from "../contexts/AppContext";
 import SignOutButton from "./SignOutButton";
-
+import Logo from '../assets/logo.jpeg'
 const Header = () => {
   const { isLoggedIn } = useAppContext();
 
   return (
-    <div className="bg-blue-800 h-30 p-7">
+    <div className="bg-blue-600 h-20 p-1">
       <div className="top-bar flex p-3">
-        <div>
+        <div className="flex text-center">
+          <img src={Logo} alt="" className="logo-imgs"/>
           <Link
             to="/"
-            className="ml-7 font-bold text-3xl hover:text-blue-400"
+            className="ml-1 mt-1 font-bold text-3xl hover:text-green-900"
           >
-            TravelHarbor.com
+            Travel<span className="text-green-900">Harbor</span>
           </Link>
         </div>
 
-        <div>
+        <div className="header ml-[550px]">
           {isLoggedIn ? (
-            <>
-              <Link to="/my-bookings" className="mr-4">
+            <div className="navs flex p-2">
+              <Link to="/my-bookings" className="mr-4 text-xl font-semibold text-gray-800 hover:text-green-950">
                 My Bookings
               </Link>
-              <Link to="/get-tour" className="mr-4">
-                Get Tour
-              </Link>
-              <Link to="/chats" className="mr-4">
-                ChatChit
-              </Link>
-              <SignOutButton />
-            </>
+             <Link to={'/chats'}  className="mr-4 text-xl font-semibold text-gray-800 hover:text-green-950">ChitChat</Link>
+              
+              <div className="text-xl p-3 relative bottom-5">
+                <SignOutButton/>
+              </div>
+              
+            </div>
           ) : (
             <Link
               to="/signin"
@@ -40,12 +40,6 @@ const Header = () => {
             </Link>
           )}
         </div>
-      </div>
-      <div className="title text-white">
-        <h1 className="text-3xl font-bold ml-72">Find your next stay</h1>
-        <p className="ml-72 font-semibold">
-          Search low prices on hotels for your dream vacation...
-        </p>
       </div>
     </div>
   );

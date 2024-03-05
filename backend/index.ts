@@ -3,10 +3,8 @@ import cors from "cors"
 const userRoutes = require('./routes/users')
 const tourRoutes = require('./routes/tours')
 const searchTourRoutes = require('./routes/toursearch')
-const cookierParser = require("cookie-parser")
-const chatRoutes = require('./routes/chat')
 const recommendationRoutes=require('./routes/recommendation')
-const messageRoutes = require('./routes/message')
+const cookierParser = require("cookie-parser")
 import { v2 as cloudinary } from "cloudinary"
 import morgan from 'morgan'
 const bookingRoutes = require('./routes/bookings')
@@ -55,16 +53,9 @@ app.use('/api/booking',bookingRoutes)
 app.use('/api/recommendation', recommendationRoutes);
 
 
-// for chating features
-app.use('/chat',chatRoutes)
-app.use('/message',messageRoutes)
-
 const server =app.listen(PORT, () => {
   console.log(`Server started on port ${PORT}`);
 });
-
-
-// socket connect garne features backend ma
 
 
 const io = require("socket.io")(server, {
@@ -90,4 +81,6 @@ io.on("connection", (socket) => {
       console.log(`User disconnected: ${socket.id}`);
   });
 });
+
+
 

@@ -1,11 +1,11 @@
 import mongoose, { trusted } from "mongoose";
 import { BookingType } from "../shared/types";
 
-
-export type RatingType = {
+export type RatingType ={
   comment: string;
-  rating: number;
-};
+  rating:number;
+}
+
 
 export type TourType = {
   _id: string;
@@ -18,14 +18,14 @@ export type TourType = {
   facilities: string[];
   pricePerPackage: number;
   starRating: number;
-  ratings: RatingType[];
+  ratings:RatingType[];
   imageUrls: string[];
   lastUpdated: Date;
   bookdate: Date;
   bookings: BookingType[];
 };
 
-const bookingSchema = new mongoose.Schema<BookingType>({
+export const bookingSchema = new mongoose.Schema<BookingType>({
   name:{
     type:String,
     required:true,
@@ -96,19 +96,19 @@ const TourSchema = new mongoose.Schema<TourType>(
       min: 1,
       max: 5,
     },
-    ratings: [
+    ratings:[
       {
-        comment: {
-          type: String,
-          required: true,
+        comment:{
+          type:String,
+          required:true,
         },
-        rating: {
-          type: Number,
-          required: true,
-          min: 1,
-          max: 5,
-        },
-      },
+        rating:{
+          type:Number,
+          required:true,
+          min:1,
+          max:5,
+        }
+      }
     ],
     imageUrls: [
       {

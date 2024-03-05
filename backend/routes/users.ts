@@ -2,9 +2,10 @@ import express from "express";
 import { check } from "express-validator";
 import verifyUserLogin from "../controller/authController";
 import verifyToken from "../middlewares/auth";
-import { bookingUserDetails, createNewUser, findUsers,verifyEmail } from "../controller/userController";
+import { bookingUserDetails, createNewUser, findUsers, verifyEmail } from "../controller/userController";
 // const router = express.Router();
 const router = express();
+
 router.get('/me',verifyToken, bookingUserDetails)
 
 router.post(
@@ -29,8 +30,6 @@ router.post(
   ],
   verifyUserLogin
 );
-router.post("/verify-email", verifyEmail);
-
 
 // router.get("/validate-token", verifyToken, (req, res) => {
 //   res.status(200).send({ userId: req.userId });
@@ -54,5 +53,7 @@ router.post("/signout", (req, res) => {
   });
   res.send();
 });
+
+router.post("/verify-email", verifyEmail);
 
 module.exports = router;
