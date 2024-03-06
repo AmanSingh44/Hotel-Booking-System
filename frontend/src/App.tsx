@@ -14,6 +14,8 @@ import HomePage from "./pages/HomePage";
 import ChatPage from "./components/chatPage";
 import Home from "./pages/Home";
 import EmailVerification from "./pages/EmailVerification";
+import ForgotPassword from "./pages/ForgotPassword";
+import ConfirmPassword from "./pages/ConfirmPassword";
 
 
 const App = () => {
@@ -31,6 +33,10 @@ const App = () => {
         <Route path="/verify-email" element={<EmailVerification/>} />
 
         <Route path="/signin" element={<SignIn />} />
+        <Route path="/signin/forget-password" element={<ForgotPassword />} />
+        <Route path="/reset-password" element={<ConfirmPassword />} />
+
+
          <Route path="/searchtour" element={<Search/>} />
          {/* <Route path="/get-tour" element={<MyTour />} /> */}
             {/* <Route path="/details/$"/> */}

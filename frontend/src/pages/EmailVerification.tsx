@@ -1,13 +1,13 @@
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import { useMutation } from "react-query";
-import { verifyUserEmail } from "../api-client";
+import { useMutation,useQueryClient } from "react-query";
+import * as apiClient from "../api-client";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useAppContext } from "../contexts/AppContext";
 
 export type EmailVerificationFormData = {
-  userId: string;
+  userId: string; // Including userId in form data
   OTP: string;
 };
 
@@ -15,30 +15,40 @@ const EmailVerification = () => {
   const { userData } = useAppContext();
   const userId = userData?.user?.id || "";
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
+
 
   const { register, handleSubmit, formState: { errors } } = useForm<EmailVerificationFormData>();
 
-  const mutation = useMutation(async (data: EmailVerificationFormData) => {
-    await verifyUserEmail(data);
-  }, {
+  const mutation = useMutation(apiClient.verifyUserEmail, {
     onSuccess: async () => {
-      console.log("Email verified successfully!");
-      toast.success("Email verified successfully!");
-      navigate('/');
+      console.log("Email Verified Successfully");
+      await queryClient.invalidateQueries("validateToken");
+      toast.success("Email verified successfully!", {
+        position: toast.POSITION.TOP_RIGHT, // Adjust based on your desired position
+        autoClose: 500, // Adjust the duration the toast is displayed
+        hideProgressBar: false,
+      });
+      navigate( "/");
     },
     onError: (error: Error) => {
-      console.error("Error verifying email:", error.message);
-      toast.error("Error verifying email: " + error.message);
+      console.log(error.message);
+      toast.error("Failure in verifying Email", {
+        position: toast.POSITION.TOP_RIGHT, // Adjust based on your desired position
+        autoClose: 500, // Adjust the duration the toast is displayed
+        hideProgressBar: false,
+      });
     },
   });
 
-  const onSubmit = handleSubmit((data) => {
-    mutation.mutate({ ...data, userId });
-  });
+
+  const onSubmit = async (data: EmailVerificationFormData) => {
+    mutation.mutate(data);
+  };
 
   return (
     <div className="rounded flex justify-center bg-slate-300 h-[1000px]">
-      <div className="m-40 flex h-[400px] w-[400px]">
+      <div className="m-40 flex h-[240px] w-[400px]">
         <div className="bg-white justify-center rounded-3xl">
           <div className="p-2 ">
             <form onSubmit={handleSubmit(onSubmit)}>
@@ -46,6 +56,13 @@ const EmailVerification = () => {
                 Email Verification
               </p>
               <div className="">
+                {/* Hidden input for userId */}
+                <input
+                  type="hidden"
+                  name="userId"
+                  {...register("userId")}
+                  value={userId}
+                />
                 <label
                   htmlFor="OTP"
                   className="block pl-2 mt-2 text-sm font-semibold leading-4 text-gray-800"
@@ -68,11 +85,11 @@ const EmailVerification = () => {
                   <div>
                     <button
                       type="submit"
-                      className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-2"
+                      className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mt-5 ml-7 "
                     >
                       Verify Account
                     </button>
-                    <button className="ml-2">I don't have OTP</button>
+                    <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-5 ml-8 mr-2">Resend OTP</button>
                   </div>
                 </div>
               </div>

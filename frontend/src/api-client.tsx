@@ -5,6 +5,8 @@ import { PaymentIntentResponse, TourSearchResponse, UserType } from "../../backe
 import { BookingFormData } from "./components/BookingForm";
 import { CommentFormData } from "./components/Experience";
 import { EmailVerificationFormData } from "./pages/EmailVerification";
+import { ForgotPasswordFormData } from "./pages/ForgotPassword";
+import { ConfirmPasswordFormData } from "./pages/ConfirmPassword";
 
 
 export const register = async (formData: RegisterFormData) => {
@@ -32,6 +34,38 @@ export const register = async (formData: RegisterFormData) => {
 
 export const verifyUserEmail=async(formData:EmailVerificationFormData)=>{
   const response=await fetch(`http://localhost:5000/api/users/verify-email`,{
+    method:"POST",
+    credentials:"include",
+    headers:{
+      "Content-Type":"application/json"
+    },
+    body:JSON.stringify(formData)
+  })
+  const body=await response.json();
+  if (!response.ok) {
+    throw new Error(body.message);
+  }
+  return body;
+}
+
+export const forgotPassowrd=async(formData:ForgotPasswordFormData)=>{
+  const response=await fetch(`http://localhost:5000/api/users/forgot-password`,{
+    method:"POST",
+    credentials:"include",
+    headers:{
+      "Content-Type":"application/json"
+    },
+    body:JSON.stringify(formData)
+  })
+  const body=await response.json();
+  if (!response.ok) {
+    throw new Error(body.message);
+  }
+  return body;
+}
+
+export const confirmPassword=async(formData:ConfirmPasswordFormData)=>{
+  const response=await fetch(`http://localhost:5000/api/users/reset-password`,{
     method:"POST",
     credentials:"include",
     headers:{
